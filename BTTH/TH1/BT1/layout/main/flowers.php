@@ -1,6 +1,7 @@
 <!--admin.php-->
-<?php include('products.php'); ?>
-<?php include('header.php'); ?>
+<?php include '../../data/products.php'; ?>
+
+<?php include('../header/header.php'); ?>
 
 <div class="container-xl mt-5">
     <div class="table-responsive">
@@ -55,7 +56,7 @@
 </div>
 
 
-<?php include('footer.php'); ?>
+<?php include('../footer/footer.php'); ?>
 
 <!-- Add Employee Modal -->
 <div id="addFlowerModal" class="modal fade">
