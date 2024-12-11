@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+use App\Models\Medicine;
+
+class MedicineController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -12,7 +14,8 @@ class PostController extends Controller
 
     public function index()
     {
-        //
+        $medicines = Medicine::all();
+        return view("home", compact("medicines"));
     }
 
     /**
@@ -20,7 +23,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('medicines.create');
     }
 
     /**
@@ -28,7 +31,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
+            'dosage' => 'required|string|max:255',
+            'form' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+        ]);
+
+        Medicine::create($validated);
+
+        Medicine::create($request->all());
+        return redirect()->route('medicines.index')->with('success', 'Post created successfully.');
     }
 
     /**

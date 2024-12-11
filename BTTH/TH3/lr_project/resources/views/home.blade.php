@@ -188,7 +188,9 @@ $(document).ready(function(){
                         <h2>User <b>Management</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
+                        <a href="{{ route('medicines.create') }}" class="btn btn-secondary">
+                            <i class="material-icons">&#xE147;</i> <span>Add New Medicine</span>
+                        </a>
                         <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>						
                     </div>
                 </div>
@@ -208,7 +210,7 @@ $(document).ready(function(){
                 <tbody>
                     <?php foreach ($medicines as $medicine): ?>
                         <tr>
-                            <td><?= htmlspecialchars($medicine['id']) ?></td>
+                            <td><?= htmlspecialchars($medicine['medicine_id']) ?></td>
                             <td><?= htmlspecialchars($medicine['name']) ?></td>
                             <td><?= htmlspecialchars($medicine['brand']) ?></td>
                             <td><?= htmlspecialchars($medicine['dosage']) ?></td>
