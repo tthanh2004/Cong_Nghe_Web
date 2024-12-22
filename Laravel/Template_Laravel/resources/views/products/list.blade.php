@@ -20,14 +20,17 @@ body {
 }
 .table-responsive {
     margin: 30px 0;
+    overflow-x: auto; /* Thêm thuộc tính này để có thể cuộn bảng khi quá rộng */
 }
 .table-wrapper {
-	background: #fff;
-	padding: 20px 25px;
-	border-radius: 3px;
-	min-width: 1000px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    width: 100%; /* Thêm dòng này để bảng chiếm toàn bộ chiều rộng */
+    max-width: 100%; /* Đảm bảo bảng không vượt quá chiều rộng màn hình */
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
+
 .table-title {        
 	padding-bottom: 15px;
 	background: #435d7d;
@@ -65,9 +68,10 @@ body {
 	margin-top: 2px;
 }
 table.table tr th, table.table tr td {
-	border-color: #e9e9e9;
-	padding: 12px 15px;
-	vertical-align: middle;
+    border-color: #e9e9e9;
+    padding: 12px 15px;
+    vertical-align: middle;
+    width: auto; /* Thêm dòng này để chiều rộng cột tự động điều chỉnh */
 }
 table.table tr th:first-child {
 	width: 60px;
@@ -235,7 +239,13 @@ table.table .avatar {
 }	
 .modal form label {
 	font-weight: normal;
-}	
+}
+table.table td img {
+    width: 50px; /* Thay đổi kích thước theo ý muốn */
+    height: 50px; /* Thay đổi kích thước theo ý muốn */
+    object-fit: cover; /* Đảm bảo ảnh không bị biến dạng */
+}
+
 </style>
 <script>
 $(document).ready(function(){
@@ -264,45 +274,97 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<div class="container-xl">
-	<div class="table-responsive">
-		<div class="table-wrapper">
-			<div class="table-title">
-				<div class="row">
-					<div class="col-sm-6">
-						<h2>Manage <b>Employees</b></h2>
-					</div>
-					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
-					</div>
-				</div>
-			</div>
-			<table class="table table-striped table-hover">
-				<thead>
-					<tr>
-                        <th>ID</th>
-						<th>Name</th>
-                        <th>Description</th>
-						<th>Phone</th>
-						<th>Email</th>
-                        <th>Price</th>
-						<th>Image</th>
-					</tr>
-                    @foreach ($products as $product)
-                    <tr>
-                        <td>{{ $product->id }}</td>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->description }}</td>
-                        <td>{{ $product->phone }}</td>
-                        <td>{{ $product->email }}</td>
-                        <td>{{ $product->price }}</td>
-                    </tr>
-                    @endforeach
-				</thead>
-            </table>
-	</div>        
-</div>
+	<div class="bg-primary py-3">
+		<h3 class="text-white text-center">Laravel 11 CRUD with Upload Image Search and Pagination</h3>
+	</div>
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-10 d-flex justify-content-end">
+                <form method="GET" action="/products/search">
+                    <div class="input-group" style="margin-right:5px;">
+                        <div class="form-outline" data-mdb-input-init>
+                            <input class="form-control" name="search" placeholder="Searh..." value="{{ request()->input('search') ? request()->input('search') : '' }}">
+                        </div>
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </form>
+                <a href="{{ route('products.create') }}" class="btn btn-primary">Create</a>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            @if (Session::has('success'))
+            <div class="col-md-10 mt-4">
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+            </div>
+            @endif
+            <div class="col-md-10">
+                <div class="card borde-0 shadow-lg my-4">
+                    <div class="card-header bg-primary">
+                        <h3 class="text-white">Products</h3>
+                    </div>
+ 
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+								<th>Email</th>
+                                <th>Price</th>
+								<th>Image</th>
+                                <th>Created at</th>
+                                <th>Action</th>
+                            </tr>
+                            @if ($products->isNotEmpty())
+                            @foreach ($products as $product)
+                            <tr>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->phone }}</td>
+								<td>{{ $product->email}}</td>
+                                <td>{{ $product->price }}</td>
+								<td>
+                                    @if ($product->image != "")
+                                    <img width="50" src="{{ asset('uploads/products/'.$product->image) }}" alt="">
+                                    @endif
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d M, Y') }}</td>
+                                <td>
+									<div class="d-flex justify-content-start">
+										<a href="{{ route('products.edit', $product->id) }}" class="btn btn-info mr-2">
+											<i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+										</a>
+										<a href="#" onclick="deleteProduct({{ $product->id }});" class="btn btn-danger">
+											<i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+										</a>
+										<form id="delete-product-from-{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="post">
+											@csrf
+											@method('delete')
+										</form>
+									</div>
+								</td>
+                            </tr>
+                            @endforeach
+ 
+                            @endif
+ 
+                        </table>
+                        {!! $products->withQueryString()->links('pagination::bootstrap-5') !!}
+                    </div>
+ 
+                </div>
+            </div>
+        </div>
+    </div>
+	<script>
+		function deleteProduct(id){
+			if ( confirm ("Are you sure you want to delete products?")){
+				document.getElementById("delete-product-from-" + id).sumbit();
+			}
+		}
+	</script>
 
 </body>
 </html>

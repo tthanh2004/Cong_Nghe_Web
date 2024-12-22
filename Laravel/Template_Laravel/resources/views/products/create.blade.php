@@ -1,4 +1,3 @@
-//resources/views/products/create.blade.php
 <!doctype html>
 <html lang="en">
  
@@ -30,32 +29,45 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label for="" class="form-label h5">Name</label>
-                                <input value="{{ old('name') }}" type="text" class="@error('name') is-invalid @enderror form-control-lg form-control" placeholder="Name" name="name">
+                                <input value="" type="text" class="@error('name') is-invalid @enderror form-control-lg form-control" placeholder="Name" name="name">
                                 @error('name')
                                 <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="" class="form-label h5">Sku</label>
-                                <input value="{{ old('sku') }}" type="text" class="@error('sku') is-invalid @enderror form-control form-control-lg" placeholder="Sku" name="sku">
-                                @error('sku')
+                                <label for="" class="form-label h5">Description</label>
+                                <textarea placeholder="Description" class="@error('description') is-invalid @enderror form-control-lg form-control" name="description" cols="30" rows="5"></textarea>
+                                @error('description')
+                                <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label h5">Phone</label>
+                                <input placeholder="Phone" class="@error('phone') is-invalid @enderror form-control-lg form-control" name="phone" value="" type="text">
+                                @error('phone')
+                                <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label h5">Email</label>
+                                <input placeholder="Email" class="@error('email') is-invalid @enderror form-control-lg form-control" name="email" value="" type="email">
+                                @error('email')
                                 <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label h5">Price</label>
-                                <input value="{{ old('price') }}" type="text" class="@error('price') is-invalid @enderror form-control form-control-lg" placeholder="Price" name="price">
+                                <input value="" type="text" class="@error('price') is-invalid @enderror form-control form-control-lg" placeholder="Price" name="price">
                                 @error('price')
                                 <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label h5">Description</label>
-                                <textarea placeholder="Description" class="form-control" name="description" cols="30" rows="5">{{ old('description') }}</textarea>
-                            </div>
+                            </div> 
                             <div class="mb-3">
                                 <label for="" class="form-label h5">Image</label>
-                                <input type="file" class="form-control form-control-lg" placeholder="Price" name="image">
+                                <input type="file" class="form-control form-control-lg" placeholder="Image" name="image">
+                                @error('image')
+                                <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="d-grid">
                                 <button class="btn btn-lg btn-primary">Submit</button>
