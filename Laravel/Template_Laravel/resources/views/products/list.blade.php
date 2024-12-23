@@ -361,7 +361,7 @@ $(document).ready(function(){
 	<script>
 		function deleteProduct(id){
 			if ( confirm ("Are you sure you want to delete products?")){
-				document.getElementById("delete-product-from-" + id).sumbit();
+				document.getElementById("delete-product-from-" + id).submit();
 			}
 		}
 	</script>
