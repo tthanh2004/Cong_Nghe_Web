@@ -12,9 +12,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <!-- Custom CSS (nếu có) -->
     <style>
-        /* Thêm các kiểu tùy chỉnh nếu cần */
+        /* Thiết lập Flexbox cho body */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             padding-top: 70px; /* Để tránh bị che bởi navbar */
+        }
+        /* Chứa nội dung chính để nó chiếm không gian còn lại */
+        .main-content {
+            flex: 1;
         }
     </style>
 </head>
@@ -26,35 +38,14 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item {{ request()->is('products') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('products.index') }}">
-                        <i class="fas fa-box"></i> Sản phẩm
-                        @if(request()->is('products'))
-                            <span class="sr-only">(current)</span>
-                        @endif
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->is('products/create') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('products.create') }}">
-                        <i class="fas fa-plus-circle"></i> Thêm Sản phẩm
-                        @if(request()->is('products/create'))
-                            <span class="sr-only">(current)</span>
-                        @endif
-                    </a>
-                </li>
-                <!-- Thêm các liên kết khác nếu cần -->
-            </ul>
-        </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container mt-4">
+    <div class="container main-content mt-4">
         <!-- Hiển thị thông báo thành công -->
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Thành công!</strong> {{ session('success') }}
+                {{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Đóng">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -93,8 +84,6 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnE5cCrkEK/RsM3WZ4VqV1C9
-            <script>
-        // Nếu bạn cần thêm JavaScript tùy chỉnh, hãy thêm ở đây
     </script>
     @yield('scripts')
 </body>

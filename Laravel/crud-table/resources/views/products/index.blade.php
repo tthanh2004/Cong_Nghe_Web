@@ -4,6 +4,12 @@
 
 @section('content')
     <h1>Danh Sách Sản phẩm</h1>
+        <!-- Thêm Nút Button Sau Bảng Sản phẩm -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('products.create') }}" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Thêm Sản phẩm Mới
+        </a>
+    </div>
 
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
@@ -25,18 +31,15 @@
                     <td>{{ $product->store->name }}</td>
                     <td>{{ $product->created_at->format('d/m/Y') }}</td>
                     <td>
-                            <a href="{{ route('products.show', $product->id) }}" class="btn btn-info btn-sm btn-action" title="Xem">Xem
-                            </a>
-                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary btn-sm btn-action" title="Sửa"> Sửa
-                            </a>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" 
-                                  class="d-inline" 
-                                  onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-action" title="Xóa">Xóa
-                                </button>
-                            </form>
+                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-info btn-sm btn-action" title="Xem">Xem</a>
+                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary btn-sm btn-action" title="Sửa">Sửa</a>
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" 
+                            class="d-inline" 
+                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm btn-action" title="Xóa">Xóa</button>
+                        </form>
                     </td>
                 </tr>
             @empty
@@ -48,5 +51,5 @@
     </table>
 
     <!-- Hiển thị phân trang -->
-    {!! $products->withQueryString()->links('pagination::bootstrap-5') !!}
+    {!! $products->links('pagination::bootstrap-5') !!}
 @endsection

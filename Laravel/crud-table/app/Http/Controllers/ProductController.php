@@ -13,7 +13,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('store')->paginate(5);
+        // $products = Product::with('store')->orderBy('created_at', 'desc')->paginate(10);
+        $products = Product::with('store')->paginate(8);
         return view('products.index', compact('products'));
     }
 
@@ -38,7 +39,9 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
-        Product::create($request->only(['store_id', 'name', 'description', 'price']));
+        //trích xuất 1 số trường nhất định từ dữ liệu được yêu cầu và tạo mới một sản phẩm
+        // Product::create($request->only(['store_id', 'name', 'description', 'price']));
+        Product::create($request->all());
 
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm thành công!');
     }
@@ -75,7 +78,8 @@ class ProductController extends Controller
         ]);
 
         $product = Product::findOrFail($id);
-        $product->update($request->only(['store_id', 'name', 'description', 'price']));
+        //$product->update($request->only(['store_id', 'name', 'description', 'price']));
+        $product->update($request->all());
 
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }

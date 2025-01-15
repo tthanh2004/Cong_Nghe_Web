@@ -19,6 +19,7 @@ class Product extends Model
     /**
      * Lấy cửa hàng mà sản phẩm thuộc về.
      */
+    // quan hệ 1 - n : store - n là products
     public function store()
     {
         return $this->belongsTo(Store::class);
